@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITz Me RedaY – Developer Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05060f; --c1:#00f0ff; --c2:#7b5cff; --c3:#ff3cac;
+    --glass:rgba(255,255,255,.06); --line:rgba(255,255,255,.14); --text:#eef2ff; --muted:#a3acd0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{min-height:100%}
+  body{font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;display:flex;align-items:center;justify-content:center;padding:28px 16px}
+
+  /* animated aurora background */
+  .aurora{position:fixed;inset:0;z-index:0;overflow:hidden}
+  .aurora i{position:absolute;width:55vmax;height:55vmax;border-radius:50%;filter:blur(90px);opacity:.38;animation:float 18s ease-in-out infinite}
+  .aurora i:nth-child(1){background:var(--c2);top:-20%;left:-15%}
+  .aurora i:nth-child(2){background:var(--c1);bottom:-25%;right:-15%;animation-delay:-6s}
+  .aurora i:nth-child(3){background:var(--c3);top:35%;left:40%;width:35vmax;height:35vmax;opacity:.22;animation-delay:-12s}
+  @keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(8vmax,6vmax) scale(1.15)}66%{transform:translate(-6vmax,9vmax) scale(.9)}}
+  canvas#fx{position:fixed;inset:0;z-index:1;pointer-events:none}
+
+  /* card */
+  .card{position:relative;z-index:2;width:100%;max-width:420px;padding:2px;border-radius:30px;background:conic-gradient(from var(--a,0deg),var(--c1),var(--c2),var(--c3),var(--c1));animation:spin 6s linear infinite;box-shadow:0 30px 80px -20px rgba(123,92,255,.55);opacity:0;transform:translateY(30px) scale(.97);animation:spin 6s linear infinite,enter 1s .1s cubic-bezier(.2,.9,.3,1) forwards}
+  @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+  @keyframes spin{to{--a:360deg}}
+  @keyframes enter{to{opacity:1;transform:none}}
+  .inner{border-radius:28px;background:linear-gradient(160deg,rgba(14,17,40,.94),rgba(8,9,24,.96));backdrop-filter:blur(20px);padding:34px 24px 26px;text-align:center}
+
+  /* avatar */
+  .avatar{position:relative;width:148px;height:148px;margin:0 auto 20px}
+  .avatar::before{content:"";position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(var(--c1),var(--c2),var(--c3),var(--c1));animation:rot 5s linear infinite;filter:blur(1px)}
+  .avatar::after{content:"";position:absolute;inset:-18px;border-radius:50%;border:1px dashed rgba(255,255,255,.25);animation:rot 14s linear infinite reverse}
+  @keyframes rot{to{transform:rotate(360deg)}}
+  .avatar img{position:relative;z-index:2;width:100%;height:100%;object-fit:cover;border-radius:50%;border:4px solid #070918;background:#0d1030;animation:bob 4s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(-5px)}}
+  .badge{position:absolute;z-index:3;right:4px;bottom:6px;width:30px;height:30px;border-radius:50%;background:#12d97f;border:4px solid #070918;display:grid;place-items:center;font-size:12px}
+  .badge::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid #12d97f;animation:ping 1.8s ease-out infinite}
+  @keyframes ping{from{transform:scale(.9);opacity:.9}to{transform:scale(1.7);opacity:0}}
+
+  h1{font-size:1.9rem;font-weight:800;letter-spacing:.3px;background:linear-gradient(90deg,var(--c1),#fff,var(--c3),var(--c2),var(--c1));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
+  @keyframes shine{to{background-position:300% 0}}
+  .role{margin-top:8px;font-size:.95rem;color:var(--muted);min-height:1.5em}
+  .role b{color:var(--c1);font-weight:600}
+  .cursor{display:inline-block;width:2px;height:1em;background:var(--c1);margin-left:3px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+
+  .tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px 0 24px}
+  .tags span{font-size:.72rem;padding:6px 12px;border-radius:99px;background:var(--glass);border:1px solid var(--line);color:#cfd6f5}
+
+  /* buttons */
+  .links{display:grid;gap:12px}
+  .btn{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:16px;text-decoration:none;color:var(--text);background:var(--glass);border:1px solid var(--line);font-weight:600;font-size:1rem;text-align:left;transition:transform .25s,box-shadow .25s,border-color .25s;opacity:0;animation:up .7s forwards}
+  .btn:nth-child(1){animation-delay:.7s}.btn:nth-child(2){animation-delay:.85s}.btn:nth-child(3){animation-delay:1s}
+  @keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .btn::before{content:"";position:absolute;inset:0;background:var(--g);opacity:0;transition:opacity .3s}
+  .btn::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-20deg);transition:left .6s}
+  .btn:hover,.btn:active{transform:translateY(-3px) scale(1.015);border-color:transparent;box-shadow:0 12px 30px -8px var(--s)}
+  .btn:hover::before,.btn:active::before{opacity:1}
+  .btn:hover::after{left:140%}
+  .btn>*{position:relative;z-index:1}
+  .ico{flex:none;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:var(--g);box-shadow:0 6px 16px -4px var(--s)}
+  .ico svg{width:24px;height:24px;fill:#fff}
+  .txt{flex:1;line-height:1.25}
+  .txt small{display:block;font-weight:400;font-size:.76rem;opacity:.8}
+  .arrow{opacity:.6;transition:transform .25s}
+  .btn:hover .arrow{transform:translateX(4px)}
+  .wa{--g:linear-gradient(135deg,#25d366,#128c7e);--s:rgba(37,211,102,.6)}
+  .tg{--g:linear-gradient(135deg,#2aabee,#229ed9);--s:rgba(42,171,238,.6)}
+  .call{--g:linear-gradient(135deg,#7b5cff,#ff3cac);--s:rgba(255,60,172,.55)}
+  .call .ico{animation:ring 2.4s ease-in-out infinite}
+  @keyframes ring{0%,60%,100%{transform:rotate(0)}65%{transform:rotate(-14deg)}72%{transform:rotate(14deg)}79%{transform:rotate(-10deg)}86%{transform:rotate(8deg)}}
+
+  footer{margin-top:24px;font-size:.74rem;color:var(--muted)}
+  footer span{color:var(--c3)}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+<div class="aurora"><i></i><i></i><i></i></div>
+<canvas id="fx"></canvas>
+
+<main class="card">
+  <div class="inner">
+    <div class="avatar">
+      <img src="https://i.ibb.co/KdZSd6V/developerlogo.png"
+           onerror="if(!this.dataset.f){this.dataset.f=1;this.src='https://i.ibb.co/kjnvjKq/developerlogo.png'}"
+           alt="ITz Me RedaY">
+      <div class="badge">✓</div>
+    </div>
+
+    <h1>ITz Me RedaY</h1>
+    <p class="role"><b id="typed"></b><span class="cursor"></span></p>
+
+    <div class="tags">
+      <span>📱 Android</span><span>🎮 Games</span><span>🔥 Firebase</span><span>💳 Play Billing</span>
+    </div>
+
+    <div class="links">
+      <a class="btn wa" href="https://wa.me/qr/JJAFU7PYRBMBJ1" target="_blank" rel="noopener">
+        <span class="ico"><svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.17c-.25.69-1.44 1.32-1.98 1.37-.5.05-1.13.07-1.82-.11a16.6 16.6 0 0 1-1.65-.61c-2.9-1.25-4.78-4.17-4.92-4.37-.15-.2-1.18-1.57-1.18-3s.75-2.12 1.01-2.41c.26-.29.57-.36.76-.36h.55c.18 0 .42-.07.65.5.25.6.84 2.06.91 2.21.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.3.77 1.27 1.65 2.05 1.14 1 2.1 1.32 2.4 1.47.3.15.47.12.65-.07.17-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.27.1 1.74.82 2.04.97.3.15.5.22.57.35.07.12.07.72-.18 1.4z"/></svg></span>
+        <span class="txt">WhatsApp<small>Chat with me</small></span>
+        <span class="arrow">➜</span>
+      </a>
+      <a class="btn tg" href="https://t.me/ITzMeRedaY" target="_blank" rel="noopener">
+        <span class="ico"><svg viewBox="0 0 24 24"><path d="M21.94 4.36 18.7 19.6c-.24 1.08-.88 1.35-1.78.84l-4.9-3.61-2.37 2.28c-.26.26-.48.48-.99.48l.35-5L18.1 6.5c.4-.35-.09-.55-.62-.2L6.3 13.34l-4.82-1.5c-1.05-.33-1.07-1.05.22-1.55L20.5 3.02c.87-.32 1.64.2 1.44 1.34z"/></svg></span>
+        <span class="txt">Telegram<small>@ITzMeRedaY</small></span>
+        <span class="arrow">➜</span>
+      </a>
+      <a class="btn call" href="tel:+8801913877535">
+        <span class="ico"><svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg></span>
+        <span class="txt">Direct Call<small>01913877535</small></span>
+        <span class="arrow">➜</span>
+      </a>
+    </div>
+
+    <footer>Crafted with <span>♥</span> by ITz Me RedaY</footer>
+  </div>
+</main>
+
+<script>
+  // typing effect
+  (function(){
+    var words=["Android Developer","Game Developer","App Creator","Problem Solver"],i=0,j=0,del=false,el=document.getElementById('typed');
+    (function tick(){
+      var w=words[i];
+      el.textContent=w.slice(0,j);
+      if(!del&&j===w.length){del=true;return setTimeout(tick,1400)}
+      if(del&&j===0){del=false;i=(i+1)%words.length}
+      j+=del?-1:1;
+      setTimeout(tick,del?40:85);
+    })();
+  })();
+
+  // floating particles
+  (function(){
+    var c=document.getElementById('fx'),x=c.getContext('2d'),W,H,P=[],N=48,m={x:-999,y:-999};
+    function size(){W=c.width=innerWidth;H=c.height=innerHeight}
+    size();addEventListener('resize',size);
+    addEventListener('pointermove',function(e){m.x=e.clientX;m.y=e.clientY});
+    for(var k=0;k<N;k++)P.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.8+.6});
+    (function draw(){
+      x.clearRect(0,0,W,H);
+      for(var a=0;a<N;a++){
+        var p=P[a];p.x+=p.vx;p.y+=p.vy;
+        if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+        var dx=p.x-m.x,dy=p.y-m.y,d=Math.hypot(dx,dy);
+        if(d<110){p.x+=dx/d*1.2;p.y+=dy/d*1.2}
+        x.beginPath();x.arc(p.x,p.y,p.r,0,6.283);x.fillStyle='rgba(0,240,255,.7)';x.fill();
+        for(var b=a+1;b<N;b++){
+          var q=P[b],l=Math.hypot(p.x-q.x,p.y-q.y);
+          if(l<110){x.strokeStyle='rgba(123,92,255,'+(1-l/110)*.35+')';x.lineWidth=.6;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.stroke()}
+        }
+      }
+      requestAnimationFrame(draw);
+    })();
+  })();
+</script>
+</body>
+</html>
